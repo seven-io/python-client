@@ -1,4 +1,5 @@
 import requests
+from pprint import pprint
 
 
 class Sms77api:
@@ -10,29 +11,45 @@ class Sms77api:
         self.apiKey = api_key
         self.sentWith = sent_with
 
-    def balance(self):
-        resp = self.request('GET', 'balance')
+    def balance(self, api_key=None):
+        args = {}
 
-        balance = float(resp.text)
+        if api_key:
+            args['p'] = api_key
 
-        if isinstance(balance, float) is not True:
-            raise ValueError('GET /balance {}'.format(resp.text))
+        res = self.request('GET', 'balance', args)
+
+        balance = float(res.text)
+
+        if not isinstance(balance, float):
+            raise ValueError('GET /balance {}'.format(res.text))
 
         return balance
 
     def request(self, method, endpoint, params={}):
         method = method.upper()
-        isJsonResponse = 'balance' != endpoint and hasattr(params, 'json')
+        is_json_res = 'balance' != endpoint and hasattr(params, 'json')
+        url = self.baseUrl + '/' + endpoint
+        payload_key = 'params'
         kwargs = {}
 
-        if len(params) != 0:
-            payloadKey = 'params' if 'GET' == method else 'json'
-            kwargs[payloadKey] = params
+        if not hasattr(params, 'p'):
+            params['p'] = self.apiKey
 
-        res = requests.request(method, self.baseUrl + '/' + endpoint, **kwargs)
+        if len(params) != 0:
+            kwargs[payload_key] = params
+
+        # pprint(kwargs)
+
+        res = requests.request(method, url, **kwargs)
 
         if res.status_code != 200:
-            formatter = res.json() if isJsonResponse else res.text
+            formatter = res.json() if is_json_res else res.text
             raise ValueError(method + '/' + endpoint + '{}'.format(formatter))
+
+        return res
+
+    def validate_for_voice(self, number: str, callback: str = None):
+        res = self.request('POST', 'validate_for_voice', locals()).json()
 
         return res
