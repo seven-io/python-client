@@ -70,6 +70,18 @@ class TestSms77api(unittest.TestCase):
 
         self.assertTrue(res['success'])
 
+    def test_voice(self):
+        res = self.client.voice('+491771783130', 'HI2U!', False, 'Python')
+        lines = res.splitlines()
+        code = int(lines[0])
+        vid = int(lines[1])
+        cost = float(lines[2])
+
+        self.assertEqual(len(lines), 3)
+        self.assertIsInstance(code, int)
+        self.assertIsInstance(vid, int)
+        self.assertIsInstance(cost, float)
+
     def test_instance(self):
         self.assertIsNotNone(self.client.apiKey)
 
