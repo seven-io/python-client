@@ -1,14 +1,12 @@
 import requests
 from src.sms77api.classes.Endpoint import Endpoint
 from src.sms77api.classes.Method import Method
-from src.sms77api.classes.ContactsAction import ContactsAction
-from src.sms77api.classes.ContactsResponse import ContactsResponse
-
-text_only_endpoints = [Endpoint.BALANCE.value, Endpoint.VOICE.value]
+from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
+from src.sms77api.classes.Lookup import LookupType, LookupJsonTypes
 
 
 def expect_json(endpoint: str, params: dict):
-    if endpoint in text_only_endpoints:
+    if endpoint in [Endpoint.BALANCE.value, Endpoint.VOICE.value]:
         return False
     if 'json' not in params:
         return False
@@ -59,12 +57,18 @@ class Sms77api:
             if 'id' in res:
                 return int(res.id)
             if 'id' in params and int(
-                    res['return']) in ContactsResponse.values():
+                    getattr(res, 'return', 0)) in ContactsResponse.values():
                 return int(params['id'])
+
             raise ValueError(
                 '{} /{} {}'.format(method.value, Endpoint.CONTACTS.value, res))
 
         return res
+
+    def lookup(self, type: LookupType, number: str, json: bool = False):
+        type = type.value
+        res = self.__request(Method.POST, Endpoint.LOOKUP, local_params(locals()))
+        return res.json() if json or type in LookupJsonTypes else res.text
 
     def validate_for_voice(self, number: str, callback: str = None):
         return self.__request(Method.POST, Endpoint.VALIDATE_FOR_VOICE,
@@ -84,9 +88,12 @@ class Sms77api:
         if not hasattr(params, 'p'):
             params['p'] = self.apiKey
 
-        for key in params:
+        for key in list(params):
             if isinstance(params[key], bool):
-                params[key] = 1 if params[key] is True else 0
+                if params[key]:
+                    params[key] = 1
+                else:
+                    params.pop(key)
 
         url = '{}/{}'.format(self.baseUrl, endpoint)
         res = requests.request(method, url, **{'params': params})
