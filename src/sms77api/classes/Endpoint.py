@@ -7,5 +7,6 @@ class Endpoint(ExtendedEnum):
     CONTACTS = 'contacts'
     LOOKUP = 'lookup'
     PRICING = 'pricing'
+    STATUS = 'status'
     VALIDATE_FOR_VOICE = 'validate_for_voice'
     VOICE = 'voice'

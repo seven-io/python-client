@@ -79,6 +79,9 @@ class Sms77api:
         res = self.__request(Method.GET, Endpoint.PRICING, local_params(locals()))
         return res.json() if PricingFormat.JSON.value == format else res.text
 
+    def status(self, msg_id: int):
+        return self.__request(Method.GET, Endpoint.STATUS, local_params(locals())).text
+
     def validate_for_voice(self, number: str, callback: str = None):
         return self.__request(Method.POST, Endpoint.VALIDATE_FOR_VOICE,
                               local_params(locals())).json()

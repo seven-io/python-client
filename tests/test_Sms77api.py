@@ -6,23 +6,32 @@ from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
 from src.sms77api.classes.Lookup import LookupType, MnpResponse
 from src.sms77api.Sms77api import Sms77api
 from src.sms77api.classes.Pricing import PricingFormat
+from src.sms77api.classes.Status import StatusMessage
 
 
-def is_valid_delimiter(csv_: str):
+def is_valid_datetime(timestamp: str, format: str) -> bool:
+    try:
+        datetime.strptime(timestamp, format)
+        return True
+    except ValueError:
+        return False
+
+
+def is_valid_delimiter(csv_: str) -> bool:
     return ';' == csv.Sniffer().sniff(csv_).delimiter
 
 
-def first_list_item_fallback(res: list):
+def first_list_item_fallback(res: list) -> any:
     return next(iter(res), None)
 
 
 class TestSms77api(unittest.TestCase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super(TestSms77api, self).__init__(*args, **kwargs)
 
-        self.client = Sms77api(os.environ.get('SMS77_DUMMY_API_KEY'))
+        self.client = Sms77api(os.environ.get('SMS77_API_KEY'))
 
-    def test_analytics(self):
+    def test_analytics(self) -> None:
         today = datetime.today()
         start = (today - timedelta(days=90)).strftime('%Y-%m-%d')
         end = today.strftime('%Y-%m-%d')
@@ -43,12 +52,12 @@ class TestSms77api(unittest.TestCase):
             self.assertIsInstance(msg['inbound'], int)
             self.assertIsInstance(msg['usage_eur'], float)
 
-    def test_balance(self):
+    def test_balance(self) -> None:
         res = self.client.balance()
 
         self.assertIsInstance(res, float)
 
-    def test_contacts_del(self):
+    def test_contacts_del(self) -> None:
         action = ContactsAction.DEL
         params = {'id': 123456}
 
@@ -61,7 +70,7 @@ class TestSms77api(unittest.TestCase):
         self.assertIsInstance(res, int)
         self.assertEqual(res, params['id'])
 
-    def test_contacts_read(self):
+    def test_contacts_read(self) -> None:
         action = ContactsAction.READ
 
         # CSV
@@ -74,7 +83,7 @@ class TestSms77api(unittest.TestCase):
         # JSON
         self.assertIsInstance(self.client.contacts(action, {'json': True}), list)
 
-    def test_contacts_write(self):
+    def test_contacts_write(self) -> None:
         action = ContactsAction.WRITE
         params = {
             'email': 'wh@tev.er',
@@ -92,7 +101,7 @@ class TestSms77api(unittest.TestCase):
         res = self.client.contacts(action, {**params, id: contact})
         self.assertEqual(int(res.splitlines()[0]), ContactsResponse.JSON.value)
 
-    def test_lookup_cnam(self):
+    def test_lookup_cnam(self) -> None:
         res = self.client.lookup(LookupType.CNAM, '+491771783130')
 
         self.assertIsInstance(res, dict)
@@ -101,7 +110,7 @@ class TestSms77api(unittest.TestCase):
         self.assertIsInstance(res['number'], str)
         self.assertIsInstance(res['name'], str)
 
-    def test_lookup_format(self):
+    def test_lookup_format(self) -> None:
         res = self.client.lookup(LookupType.FORMAT, '+491771783130')
 
         self.assertIsInstance(res, dict)
@@ -115,7 +124,7 @@ class TestSms77api(unittest.TestCase):
         self.assertIsInstance(res['carrier'], str)
         self.assertIsInstance(res['network_type'], str)
 
-    def test_lookup_hlr(self):
+    def test_lookup_hlr(self) -> None:
         def is_valid_carrier(carrier: dict):
             valid = isinstance(carrier['network_code'], str)
             valid = isinstance(carrier['name'], str) if valid else False
@@ -148,7 +157,7 @@ class TestSms77api(unittest.TestCase):
         self.assertTrue(is_valid_carrier(res['current_carrier']))
         self.assertTrue(is_valid_carrier(res['original_carrier']))
 
-    def test_lookup_mnp(self):
+    def test_lookup_mnp(self) -> None:
         res = self.client.lookup(LookupType.MNP, '+491771783130')
         self.assertIsInstance(res, str)
         self.assertIn(res, MnpResponse.values())
@@ -170,7 +179,7 @@ class TestSms77api(unittest.TestCase):
         self.assertIsInstance(res['mnp']['mccmnc'], str)
         self.assertIsInstance(res['mnp']['isPorted'], bool)
 
-    def test_pricing(self):
+    def test_pricing(self) -> None:
         # CSV
         res = self.client.pricing(PricingFormat.CSV, 'fr')
         self.assertIsInstance(res, str)
@@ -201,7 +210,15 @@ class TestSms77api(unittest.TestCase):
                 self.assertIsInstance(network['features'], list)
                 self.assertIsInstance(network['comment'], str)
 
-    def test_validate_for_voice(self):
+    def test_status(self) -> None:
+        res = self.client.status(77127422642)
+        self.assertIsInstance(res, str)
+
+        status, timestamp = res.splitlines()
+        self.assertIn(status, StatusMessage.values())
+        self.assertTrue(is_valid_datetime(timestamp, "%Y-%m-%d %H:%M:%S.%f"))
+
+    def test_validate_for_voice(self) -> None:
         res = self.client.validate_for_voice(
             '+491771783130', 'sms77.io/my_dummy_callback.php')
 
@@ -209,7 +226,7 @@ class TestSms77api(unittest.TestCase):
 
         self.assertTrue(res['success'])
 
-    def test_voice(self):
+    def test_voice(self) -> None:
         res = self.client.voice('+491771783130', 'HI2U!', False, 'Python')
         lines = res.splitlines()
         code = int(lines[0])
@@ -221,7 +238,7 @@ class TestSms77api(unittest.TestCase):
         self.assertIsInstance(vid, int)
         self.assertIsInstance(cost, float)
 
-    def test_instance(self):
+    def test_instance(self) -> None:
         self.assertIsNotNone(self.client.apiKey)
 
 
