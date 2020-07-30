@@ -9,9 +9,9 @@ from src.sms77api.classes.Pricing import PricingFormat
 from src.sms77api.classes.Status import StatusMessage
 
 
-def is_valid_datetime(timestamp: str, format: str) -> bool:
+def is_valid_datetime(timestamp: str, formatting: str) -> bool:
     try:
-        datetime.strptime(timestamp, format)
+        datetime.strptime(timestamp, formatting)
         return True
     except ValueError:
         return False
@@ -29,7 +29,7 @@ class TestSms77api(unittest.TestCase):
     def __init__(self, *args, **kwargs) -> None:
         super(TestSms77api, self).__init__(*args, **kwargs)
 
-        self.client = Sms77api(os.environ.get('SMS77_API_KEY'))
+        self.client = Sms77api(os.environ.get('SMS77_DUMMY_API_KEY'))
 
     def test_analytics(self) -> None:
         today = datetime.today()
@@ -209,6 +209,55 @@ class TestSms77api(unittest.TestCase):
                 self.assertIsInstance(network['price'], float)
                 self.assertIsInstance(network['features'], list)
                 self.assertIsInstance(network['comment'], str)
+
+    def test_sms(self) -> None:
+        res = self.client.sms('+4917661254799', 'HEY!!')
+        self.assertEqual(res, '100')
+
+        res = self.client.sms('+4917661254799', 'HEY!!', {'return_msg_id': True})
+        code, sid = res.splitlines()
+        self.assertEqual(code, '100')
+        self.assertIsInstance(sid, str)
+
+        res = self.client.sms('+4917661254799', 'HEY!!',
+                              {'return_msg_id': True, 'details': True})
+        lines = res.splitlines()
+        self.assertEqual(lines[0], '100')
+        self.assertIsInstance(lines[1], str)
+        self.assertIsInstance(lines[2], str)
+        self.assertIsInstance(lines[3], str)
+        self.assertIsInstance(lines[4], str)
+        self.assertIsInstance(lines[5], str)
+        self.assertIsInstance(lines[6], str)
+        self.assertIsInstance(lines[7], str)
+        self.assertIsInstance(lines[8], str)
+        self.assertIsInstance(lines[9], str)
+        self.assertIsInstance(lines[10], str)
+
+        # JSON
+        res = self.client.sms('+4917661254799', 'HEY!!', {'json': True, })
+        self.assertEqual(res['success'], '100')
+        self.assertIsInstance(res['total_price'], (float, int))
+        self.assertIsInstance(res['balance'], float)
+        self.assertIsInstance(res['debug'], str)
+        self.assertIsInstance(res['sms_type'], str)
+        self.assertIsInstance(res['messages'], list)
+        self.assertGreater(len(res['messages']), 0)
+        message = first_list_item_fallback(res['messages'])
+        if message:
+            if 'true' == res['debug']:
+                self.assertIsNone(message['id'])
+            else:
+                self.assertIsInstance(message['id'], int)
+            self.assertIsInstance(message['sender'], str)
+            self.assertIsInstance(message['recipient'], str)
+            self.assertIsInstance(message['text'], str)
+            self.assertIsInstance(message['encoding'], str)
+            self.assertIsInstance(message['parts'], int)
+            self.assertIsInstance(message['price'], (float, int))
+            self.assertIsInstance(message['success'], bool)
+            self.assertIn('error', message)
+            self.assertIn('error_text', message)
 
     def test_status(self) -> None:
         res = self.client.status(77127422642)

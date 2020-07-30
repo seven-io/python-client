@@ -79,6 +79,14 @@ class Sms77api:
         res = self.__request(Method.GET, Endpoint.PRICING, local_params(locals()))
         return res.json() if PricingFormat.JSON.value == format else res.text
 
+    def sms(self, to: str, text: str, params: dict = {}):
+        params['to'] = to
+        params['text'] = text
+        res = self.__request(Method.POST, Endpoint.SMS, params)
+        return res.json() \
+            if 'json' in params \
+               and (True is params['json'] or 1 == params['json']) else res.text
+
     def status(self, msg_id: int):
         return self.__request(Method.GET, Endpoint.STATUS, local_params(locals())).text
 
