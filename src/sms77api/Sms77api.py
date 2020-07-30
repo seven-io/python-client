@@ -6,7 +6,7 @@ from src.sms77api.classes.Lookup import LookupType, LookupJsonTypes
 from src.sms77api.classes.Pricing import PricingFormat
 
 
-def expect_json(endpoint: str, params: dict):
+def expect_json(endpoint: str, params: dict) -> bool:
     if endpoint in [Endpoint.BALANCE.value, Endpoint.VOICE.value]:
         return False
     if 'json' not in params:
@@ -16,7 +16,7 @@ def expect_json(endpoint: str, params: dict):
     return True
 
 
-def local_params(locals_: dict):
+def local_params(locals_: dict) -> dict:
     del locals_['self']
     return locals_
 
@@ -55,13 +55,11 @@ class Sms77api:
         method = Method.GET if 'read' == action else Method.POST
         res = self.__request(method, Endpoint.CONTACTS, params)
         res = res.json() if expect_json(Endpoint.CONTACTS.value, params) else res.text
-        is_dict = isinstance(res, dict)
 
-        if is_dict:
+        if isinstance(res, dict):
             if 'id' in res:
-                return int(res.id)
-            if 'id' in params and int(
-                    getattr(res, 'return', 0)) in ContactsResponse.values():
+                return int(res['id'])
+            if 'id' in params and int(res['return']) in ContactsResponse.values():
                 return int(params['id'])
 
             raise ValueError(
