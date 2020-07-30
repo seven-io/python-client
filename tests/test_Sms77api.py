@@ -1,6 +1,7 @@
 import unittest
 import os
 import csv
+from datetime import datetime, timedelta
 from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
 from src.sms77api.classes.Lookup import LookupType, MnpResponse
 from src.sms77api.Sms77api import Sms77api
@@ -11,6 +12,27 @@ class TestSms77api(unittest.TestCase):
         super(TestSms77api, self).__init__(*args, **kwargs)
 
         self.client = Sms77api(os.environ.get('SMS77_DUMMY_API_KEY'))
+
+    def test_analytics(self):
+        today = datetime.today()
+        start = (today - timedelta(days=90)).strftime('%Y-%m-%d')
+        end = today.strftime('%Y-%m-%d')
+
+        res = self.client.analytics(
+            {'start': start, 'end': end, 'label': 'all', 'group_by': 'country'})
+
+        self.assertIsInstance(res, list)
+
+        msg = next(iter(res), None)
+        if msg:
+            self.assertIsInstance(msg['country'], str)
+            self.assertIsInstance(msg['economy'], int)
+            self.assertIsInstance(msg['direct'], int)
+            self.assertIsInstance(msg['voice'], int)
+            self.assertIsInstance(msg['hlr'], int)
+            self.assertIsInstance(msg['mnp'], int)
+            self.assertIsInstance(msg['inbound'], int)
+            self.assertIsInstance(msg['usage_eur'], float)
 
     def test_balance(self):
         res = self.client.balance()

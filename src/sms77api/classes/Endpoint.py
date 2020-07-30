@@ -2,6 +2,7 @@ from src.sms77api.classes.ExtendedEnum import ExtendedEnum
 
 
 class Endpoint(ExtendedEnum):
+    ANALYTICS = 'analytics'
     BALANCE = 'balance'
     CONTACTS = 'contacts'
     LOOKUP = 'lookup'

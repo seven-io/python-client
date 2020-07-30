@@ -29,6 +29,9 @@ class Sms77api:
         self.apiKey = api_key
         self.sentWith = sent_with
 
+    def analytics(self, params={}):
+        return self.__request(Method.GET, Endpoint.ANALYTICS, params).json()
+
     def balance(self, api_key: str = None):
         args = {}
 
