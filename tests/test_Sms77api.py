@@ -5,6 +5,15 @@ from datetime import datetime, timedelta
 from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
 from src.sms77api.classes.Lookup import LookupType, MnpResponse
 from src.sms77api.Sms77api import Sms77api
+from src.sms77api.classes.Pricing import PricingFormat
+
+
+def is_valid_delimiter(csv_: str):
+    return ';' == csv.Sniffer().sniff(csv_).delimiter
+
+
+def first_list_item_fallback(res: list):
+    return next(iter(res), None)
 
 
 class TestSms77api(unittest.TestCase):
@@ -23,7 +32,7 @@ class TestSms77api(unittest.TestCase):
 
         self.assertIsInstance(res, list)
 
-        msg = next(iter(res), None)
+        msg = first_list_item_fallback(res)
         if msg:
             self.assertIsInstance(msg['country'], str)
             self.assertIsInstance(msg['economy'], int)
@@ -58,7 +67,7 @@ class TestSms77api(unittest.TestCase):
         # CSV
         res = self.client.contacts(action)
         if len(res):
-            self.assertEqual(csv.Sniffer().sniff(res).delimiter, ';')
+            self.assertTrue(is_valid_delimiter(res))
         else:
             self.assertEqual(res, '')
 
@@ -160,6 +169,37 @@ class TestSms77api(unittest.TestCase):
         self.assertIsInstance(res['mnp']['network'], str)
         self.assertIsInstance(res['mnp']['mccmnc'], str)
         self.assertIsInstance(res['mnp']['isPorted'], bool)
+
+    def test_pricing(self):
+        # CSV
+        res = self.client.pricing(PricingFormat.CSV, 'fr')
+        self.assertIsInstance(res, str)
+        self.assertTrue(is_valid_delimiter(res))
+
+        # JSON
+        res = self.client.pricing(PricingFormat.JSON, 'de')
+        self.assertIsInstance(res, dict)
+        self.assertIsInstance(res['countCountries'], int)
+        self.assertIsInstance(res['countNetworks'], int)
+        self.assertIsInstance(res['countries'], list)
+
+        country = first_list_item_fallback(res['countries'])
+        if country:
+            self.assertIsInstance(country['countryCode'], str)
+            self.assertIsInstance(country['countryName'], str)
+            self.assertIsInstance(country['countryPrefix'], str)
+            self.assertIsInstance(country['networks'], list)
+            network = first_list_item_fallback(country['networks'])
+            if network:
+                self.assertIsInstance(network['mcc'], str)
+                self.assertIsInstance(network['mncs'], list)
+                mnc = first_list_item_fallback(network['mncs'])
+                if mnc:
+                    self.assertIsInstance(mnc, str)
+                self.assertIsInstance(network['networkName'], str)
+                self.assertIsInstance(network['price'], float)
+                self.assertIsInstance(network['features'], list)
+                self.assertIsInstance(network['comment'], str)
 
     def test_validate_for_voice(self):
         res = self.client.validate_for_voice(

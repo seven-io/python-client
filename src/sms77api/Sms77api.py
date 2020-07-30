@@ -3,6 +3,7 @@ from src.sms77api.classes.Endpoint import Endpoint
 from src.sms77api.classes.Method import Method
 from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
 from src.sms77api.classes.Lookup import LookupType, LookupJsonTypes
+from src.sms77api.classes.Pricing import PricingFormat
 
 
 def expect_json(endpoint: str, params: dict):
@@ -72,6 +73,11 @@ class Sms77api:
         type = type.value
         res = self.__request(Method.POST, Endpoint.LOOKUP, local_params(locals()))
         return res.json() if json or type in LookupJsonTypes else res.text
+
+    def pricing(self, format: PricingFormat = PricingFormat.CSV, country: str = None):
+        format = format.value
+        res = self.__request(Method.GET, Endpoint.PRICING, local_params(locals()))
+        return res.json() if PricingFormat.JSON.value == format else res.text
 
     def validate_for_voice(self, number: str, callback: str = None):
         return self.__request(Method.POST, Endpoint.VALIDATE_FOR_VOICE,
