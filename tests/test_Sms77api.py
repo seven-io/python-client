@@ -1,36 +1,12 @@
-import unittest
-import os
-import csv
 from datetime import datetime, timedelta
 from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
 from src.sms77api.classes.Lookup import LookupType, MnpResponse
-from src.sms77api.Sms77api import Sms77api
 from src.sms77api.classes.Pricing import PricingFormat
 from src.sms77api.classes.Status import StatusMessage
+from tests.BaseTest import BaseTest
 
 
-def is_valid_datetime(timestamp: str, formatting: str) -> bool:
-    try:
-        datetime.strptime(timestamp, formatting)
-        return True
-    except ValueError:
-        return False
-
-
-def is_valid_delimiter(csv_: str) -> bool:
-    return ';' == csv.Sniffer().sniff(csv_).delimiter
-
-
-def first_list_item_fallback(res: list) -> any:
-    return next(iter(res), None)
-
-
-class TestSms77api(unittest.TestCase):
-    def __init__(self, *args, **kwargs) -> None:
-        super(TestSms77api, self).__init__(*args, **kwargs)
-
-        self.client = Sms77api(os.environ.get('SMS77_DUMMY_API_KEY'))
-
+class TestSms77api(BaseTest):
     def test_analytics(self) -> None:
         today = datetime.today()
         start = (today - timedelta(days=90)).strftime('%Y-%m-%d')
@@ -41,7 +17,7 @@ class TestSms77api(unittest.TestCase):
 
         self.assertIsInstance(res, list)
 
-        msg = first_list_item_fallback(res)
+        msg = BaseTest.first_list_item_fallback(res)
         if msg:
             self.assertIsInstance(msg['country'], str)
             self.assertIsInstance(msg['economy'], int)
@@ -76,7 +52,7 @@ class TestSms77api(unittest.TestCase):
         # CSV
         res = self.client.contacts(action)
         if len(res):
-            self.assertTrue(is_valid_delimiter(res))
+            self.assertTrue(BaseTest.is_valid_delimiter(res))
         else:
             self.assertEqual(res, '')
 
@@ -183,7 +159,7 @@ class TestSms77api(unittest.TestCase):
         # CSV
         res = self.client.pricing(PricingFormat.CSV, 'fr')
         self.assertIsInstance(res, str)
-        self.assertTrue(is_valid_delimiter(res))
+        self.assertTrue(BaseTest.is_valid_delimiter(res))
 
         # JSON
         res = self.client.pricing(PricingFormat.JSON, 'de')
@@ -192,17 +168,17 @@ class TestSms77api(unittest.TestCase):
         self.assertIsInstance(res['countNetworks'], int)
         self.assertIsInstance(res['countries'], list)
 
-        country = first_list_item_fallback(res['countries'])
+        country = BaseTest.first_list_item_fallback(res['countries'])
         if country:
             self.assertIsInstance(country['countryCode'], str)
             self.assertIsInstance(country['countryName'], str)
             self.assertIsInstance(country['countryPrefix'], str)
             self.assertIsInstance(country['networks'], list)
-            network = first_list_item_fallback(country['networks'])
+            network = BaseTest.first_list_item_fallback(country['networks'])
             if network:
                 self.assertIsInstance(network['mcc'], str)
                 self.assertIsInstance(network['mncs'], list)
-                mnc = first_list_item_fallback(network['mncs'])
+                mnc = BaseTest.first_list_item_fallback(network['mncs'])
                 if mnc:
                     self.assertIsInstance(mnc, str)
                 self.assertIsInstance(network['networkName'], str)
@@ -243,7 +219,7 @@ class TestSms77api(unittest.TestCase):
         self.assertIsInstance(res['sms_type'], str)
         self.assertIsInstance(res['messages'], list)
         self.assertGreater(len(res['messages']), 0)
-        message = first_list_item_fallback(res['messages'])
+        message = BaseTest.first_list_item_fallback(res['messages'])
         if message:
             if 'true' == res['debug']:
                 self.assertIsNone(message['id'])
@@ -265,7 +241,7 @@ class TestSms77api(unittest.TestCase):
 
         status, timestamp = res.splitlines()
         self.assertIn(status, StatusMessage.values())
-        self.assertTrue(is_valid_datetime(timestamp, "%Y-%m-%d %H:%M:%S.%f"))
+        self.assertTrue(BaseTest.is_valid_datetime(timestamp, "%Y-%m-%d %H:%M:%S.%f"))
 
     def test_validate_for_voice(self) -> None:
         res = self.client.validate_for_voice(
@@ -289,7 +265,3 @@ class TestSms77api(unittest.TestCase):
 
     def test_instance(self) -> None:
         self.assertIsNotNone(self.client.apiKey)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,4 +1,6 @@
 import requests
+
+from sms77api.classes.Hooks import HooksAction
 from src.sms77api.classes.Endpoint import Endpoint
 from src.sms77api.classes.Method import Method
 from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
@@ -66,6 +68,13 @@ class Sms77api:
                 '{} /{} {}'.format(method.value, Endpoint.CONTACTS.value, res))
 
         return res
+
+    def hooks(self, action: HooksAction, params: dict = {}):
+        params['action'] = action.value
+        method = Method.GET if action.READ == action else Method.POST
+        res = self.__request(method, Endpoint.HOOKS, params)
+
+        return res.json()
 
     def lookup(self, type: LookupType, number: str, json: bool = False):
         type = type.value
