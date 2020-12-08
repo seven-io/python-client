@@ -1,6 +1,7 @@
 import requests
 
 from sms77api.classes.Hooks import HooksAction
+from sms77api.classes.Journal import JournalType
 from src.sms77api.classes.Endpoint import Endpoint
 from src.sms77api.classes.Method import Method
 from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
@@ -73,6 +74,12 @@ class Sms77api:
         params['action'] = action.value
         method = Method.GET if action.READ == action else Method.POST
         res = self.__request(method, Endpoint.HOOKS, params)
+
+        return res.json()
+
+    def journal(self, _type: JournalType, params: dict = {}):
+        params['type'] = _type.value
+        res = self.__request(Method.GET, Endpoint.JOURNAL, params)
 
         return res.json()
 

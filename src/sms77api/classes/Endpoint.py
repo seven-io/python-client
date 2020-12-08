@@ -6,6 +6,7 @@ class Endpoint(ExtendedEnum):
     BALANCE = 'balance'
     CONTACTS = 'contacts'
     HOOKS = 'hooks'
+    JOURNAL = 'journal'
     LOOKUP = 'lookup'
     PRICING = 'pricing'
     SMS = 'sms'

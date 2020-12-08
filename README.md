@@ -8,18 +8,7 @@ pip3 install sms77api
 
 ### Example
 ```python
-from sms77api import Sms77api
-client = Sms77api('MySuperSecretApiKey!!!')
+from sms77api.Sms77api import Sms77api
+client = Sms77api('InsertYourSuperSecretApiKeyFromSms77.Io!')
 print(client.balance())
 ```
-
-#### Implemented endpoints:
-- analytics
-- balance
-- contacts
-- lookup
-- pricing
-- sms
-- status
-- validate_for_voice
-- voice
