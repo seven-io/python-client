@@ -1,4 +1,4 @@
-from src.sms77api.classes.ExtendedEnum import ExtendedEnum
+from sms77api.classes.ExtendedEnum import ExtendedEnum
 
 
 class LookupType(ExtendedEnum):

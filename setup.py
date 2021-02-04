@@ -1,7 +1,9 @@
-import pathlib
 import setuptools
+from os import path
 
-here = pathlib.Path(__file__).parent.resolve()
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setuptools.setup(
     author='sms77 e.K.',
@@ -22,11 +24,11 @@ setuptools.setup(
     name='sms77api',
     install_requires=['requests'],
     keywords='sms, text2voice',
-    long_description=(here / 'README.md').read_text(encoding='utf-8'),
+    long_description=long_description,
     long_description_content_type='text/markdown',
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
     python_requires='>=3.5, <4',
     url='https://github.com/sms77io/python-client',
-    version='1.0.0',
+    version='1.1.0',
 )

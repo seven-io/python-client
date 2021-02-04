@@ -9,6 +9,6 @@ pip3 install sms77api
 ### Example
 ```python
 from sms77api.Sms77api import Sms77api
-client = Sms77api('InsertYourSuperSecretApiKeyFromSms77.Io!')
+client = Sms77api("InsertYourSuperSecretApiKeyFromSms77.Io!")
 print(client.balance())
 ```

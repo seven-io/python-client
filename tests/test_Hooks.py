@@ -1,4 +1,4 @@
-from src.sms77api.classes.Hooks import HooksAction, HookEventType, HookRequestMethod
+from sms77api.classes.Hooks import HooksAction, HookEventType, HookRequestMethod
 from tests.BaseTest import BaseTest
 
 

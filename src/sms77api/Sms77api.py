@@ -2,11 +2,11 @@ import requests
 
 from sms77api.classes.Hooks import HooksAction
 from sms77api.classes.Journal import JournalType
-from src.sms77api.classes.Endpoint import Endpoint
-from src.sms77api.classes.Method import Method
-from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
-from src.sms77api.classes.Lookup import LookupType, LookupJsonTypes
-from src.sms77api.classes.Pricing import PricingFormat
+from sms77api.classes.Endpoint import Endpoint
+from sms77api.classes.Method import Method
+from sms77api.classes.Contacts import ContactsAction, ContactsResponse
+from sms77api.classes.Lookup import LookupType, LookupJsonTypes
+from sms77api.classes.Pricing import PricingFormat
 
 
 def expect_json(endpoint: str, params: dict) -> bool:

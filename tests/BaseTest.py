@@ -3,7 +3,7 @@ import os
 import csv
 import uuid
 from datetime import datetime
-from src.sms77api.Sms77api import Sms77api
+from sms77api.Sms77api import Sms77api
 
 
 class BaseTest(unittest.TestCase):
