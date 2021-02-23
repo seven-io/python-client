@@ -28,7 +28,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
-    python_requires='>=3.5, <4',
+    python_requires='>=3.4, <4',
     url='https://github.com/sms77io/python-client',
-    version='1.1.0',
+    version='1.2.0',
 )

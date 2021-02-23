@@ -8,6 +8,7 @@ class HooksAction(ExtendedEnum):
 
 
 class HookEventType(ExtendedEnum):
+    ALL = 'all'
     SMS_STATUS = 'dlr'
     SMS_INBOUND = 'sms_mo'
     VOICE_STATUS = 'voice_status'
@@ -15,4 +16,5 @@ class HookEventType(ExtendedEnum):
 
 class HookRequestMethod(ExtendedEnum):
     GET = 'GET'
+    JSON = 'JSON'
     POST = 'POST'
