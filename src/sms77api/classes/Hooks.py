@@ -11,8 +11,8 @@ class HookEventType(ExtendedEnum):
     ALL = 'all'
     SMS_STATUS = 'dlr'
     SMS_INBOUND = 'sms_mo'
+    TRACKING = 'tracking'
     VOICE_STATUS = 'voice_status'
-
 
 class HookRequestMethod(ExtendedEnum):
     GET = 'GET'
