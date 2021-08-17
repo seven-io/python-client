@@ -1,9 +1,9 @@
-from sms77api.classes.Journal import JournalType
+from src.sms77api.classes.Journal import JournalType
 from tests.BaseTest import BaseTest
 
 
 class TestJournal(BaseTest):
-    def base(self, _type, params={}) -> list:
+    def base(self, _type, params={}, commons=True) -> list:
         entries = self.client.journal(_type, params)
 
         self.assertIsInstance(entries, list)
@@ -11,23 +11,24 @@ class TestJournal(BaseTest):
         for entry in entries:
             self.assertIsInstance(entry, dict)
 
-            self.assertIsInstance(entry['from'], str)
-            self.assertGreater(len(entry['from']), 0)
+            if commons:
+                self.assertIsInstance(entry['from'], str)
+                self.assertGreater(len(entry['from']), 0)
 
-            self.assertIsInstance(entry['id'], str)
-            self.assertGreater(len(entry['id']), 0)
+                self.assertIsInstance(entry['id'], str)
+                self.assertGreater(len(entry['id']), 0)
 
-            self.assertIsInstance(entry['price'], str)
-            self.assertGreater(len(entry['price']), 0)
+                self.assertIsInstance(entry['price'], str)
+                self.assertGreater(len(entry['price']), 0)
 
-            self.assertIsInstance(entry['text'], str)
-            self.assertGreater(len(entry['text']), 0)
+                self.assertIsInstance(entry['text'], str)
+                self.assertGreater(len(entry['text']), 0)
 
-            self.assertIsInstance(entry['timestamp'], str)
-            self.assertGreater(len(entry['timestamp']), 0)
+                self.assertIsInstance(entry['timestamp'], str)
+                self.assertGreater(len(entry['timestamp']), 0)
 
-            self.assertIsInstance(entry['to'], str)
-            self.assertGreater(len(entry['to']), 0)
+                self.assertIsInstance(entry['to'], str)
+                self.assertGreater(len(entry['to']), 0)
 
         return entries
 
@@ -91,3 +92,10 @@ class TestJournal(BaseTest):
             self.assertIsInstance(entry['status'], str)
 
             self.assertIsInstance(entry['xml'], bool)
+
+    def test_voice_call(self) -> None:
+        for entry in self.base(JournalType.VOICE_CALL, {}, False):
+            self.assertIsInstance(entry['caller'], str)
+            self.assertIsInstance(entry['id'], str)
+            self.assertIsInstance(entry['system'], str)
+            self.assertIsInstance(entry['time'], str)
