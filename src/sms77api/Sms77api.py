@@ -108,12 +108,14 @@ class Sms77api:
         return self.__request(Method.POST, Endpoint.VALIDATE_FOR_VOICE,
                               local_params(locals())).json()
 
-    def voice(self, to: str, text: str, xml: bool = False, sender: str = None):
-        params = local_params(locals())
-        params['from'] = sender
-        del params['sender']
+    def voice(self, to: str, text: str, params: dict = {}):
+        params['to'] = to
+        params['text'] = text
 
-        return self.__request(Method.POST, Endpoint.VOICE, params).text
+        res = self.__request(Method.POST, Endpoint.VOICE, params)
+        return res.json() \
+            if 'json' in params \
+               and (True is params['json'] or 1 == params['json']) else res.text
 
     def __request(self, method: Method, endpoint: Endpoint, params={}):
         method = method.value
