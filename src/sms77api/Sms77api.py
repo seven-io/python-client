@@ -84,14 +84,21 @@ class Sms77api:
         return res.json()
 
     def lookup(self, typ: LookupType, number: str, json: bool = False):
-        typ_value = typ.value
-        res = self.__request(Method.POST, Endpoint.LOOKUP, local_params(locals()))
-        return res.json() if json or typ_value in LookupJsonTypes else res.text
+        params = {
+            'json': json,
+            'number': number,
+            'type': typ.value,
+        }
+        res = self.__request(Method.POST, Endpoint.LOOKUP, params)
+        return res.json() if json or params['type'] in LookupJsonTypes else res.text
 
     def pricing(self, format_: PricingFormat = PricingFormat.CSV, country: str = None):
-        format_value = format_.value
-        res = self.__request(Method.GET, Endpoint.PRICING, local_params(locals()))
-        return res.json() if PricingFormat.JSON.value == format_value else res.text
+        params = {
+            'country': country,
+            'format': format_.value,
+        }
+        res = self.__request(Method.GET, Endpoint.PRICING, params)
+        return res.json() if PricingFormat.JSON.value == params['format'] else res.text
 
     def sms(self, to: str, text: str, params: dict = {}):
         params['to'] = to

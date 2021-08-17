@@ -30,5 +30,5 @@ setuptools.setup(
     packages=setuptools.find_packages(where='src'),
     python_requires='>=3.4, <4',
     url='https://github.com/sms77io/python-client',
-    version='1.3.0',
+    version='2.0.0',
 )

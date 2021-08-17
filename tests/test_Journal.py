@@ -22,7 +22,6 @@ class TestJournal(BaseTest):
                 self.assertGreater(len(entry['price']), 0)
 
                 self.assertIsInstance(entry['text'], str)
-                self.assertGreater(len(entry['text']), 0)
 
                 self.assertIsInstance(entry['timestamp'], str)
                 self.assertGreater(len(entry['timestamp']), 0)
@@ -33,7 +32,13 @@ class TestJournal(BaseTest):
         return entries
 
     def test_inbound(self) -> None:
-        self.base(JournalType.INBOUND)
+        for entry in self.base(JournalType.INBOUND, {}, False):
+            self.assertIsInstance(entry['id'], str)
+            self.assertIsInstance(entry['price'], str)
+            self.assertIsInstance(entry['sender'], str)
+            self.assertIsInstance(entry['system'], str)
+            self.assertIsInstance(entry['text'], str)
+            self.assertIsInstance(entry['time'], str)
 
     def test_outbound(self) -> None:
         for entry in self.base(JournalType.OUTBOUND):

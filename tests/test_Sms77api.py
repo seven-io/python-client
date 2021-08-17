@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
-from sms77api.classes.Contacts import ContactsAction, ContactsResponse
-from sms77api.classes.Lookup import LookupType, MnpResponse
-from sms77api.classes.Pricing import PricingFormat
-from sms77api.classes.Status import StatusMessage
+from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
+from src.sms77api.classes.Journal import JournalType
+from src.sms77api.classes.Lookup import LookupType, MnpResponse
+from src.sms77api.classes.Pricing import PricingFormat
+from src.sms77api.classes.Status import StatusMessage
 from tests.BaseTest import BaseTest
 
 
@@ -20,13 +21,12 @@ class TestSms77api(BaseTest):
         msg = BaseTest.first_list_item_fallback(res)
         if msg:
             self.assertIsInstance(msg['country'], str)
-            self.assertTrue(isinstance(msg['economy'], (int, type(None))))
-            self.assertTrue(isinstance(msg['direct'], (int, type(None))))
-            self.assertIsInstance(msg['voice'], int)
             self.assertIsInstance(msg['hlr'], int)
-            self.assertIsInstance(msg['mnp'], int)
             self.assertIsInstance(msg['inbound'], int)
+            self.assertIsInstance(msg['mnp'], int)
+            self.assertIsInstance(msg['sms'], int)
             self.assertIsInstance(msg['usage_eur'], float)
+            self.assertIsInstance(msg['voice'], int)
 
     def test_balance(self) -> None:
         res = self.client.balance()
@@ -236,7 +236,8 @@ class TestSms77api(BaseTest):
             self.assertIn('error_text', message)
 
     def test_status(self) -> None:
-        res = self.client.status(77134748206)
+        msg = self.client.journal(JournalType.OUTBOUND)[0]['id']
+        res = self.client.status(msg)
         self.assertIsInstance(res, str)
 
         status, timestamp = res.splitlines()
@@ -252,7 +253,8 @@ class TestSms77api(BaseTest):
         self.assertTrue(res['success'])
 
     def test_voice(self) -> None:
-        res = self.client.voice('+491771783130', 'HI2U!', False, 'Python')
+        res = self.client.voice('+491771783130', 'HI2U!',
+                                {'xml': False, 'from': '+13134378004'})
         lines = res.splitlines()
         code = int(lines[0])
         vid = int(lines[1])
