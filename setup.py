@@ -23,7 +23,7 @@ setuptools.setup(
     description='A Python wrapper for the Sms77.io SMS gateway.',
     name='sms77api',
     install_requires=['requests'],
-    keywords='sms, text2voice',
+    keywords='sms, text2voice, hlr, cnam, mnp',
     long_description=long_description,
     long_description_content_type='text/markdown',
     package_dir={'': 'src'},

@@ -14,6 +14,7 @@ class HookEventType(ExtendedEnum):
     TRACKING = 'tracking'
     VOICE_STATUS = 'voice_status'
 
+
 class HookRequestMethod(ExtendedEnum):
     GET = 'GET'
     JSON = 'JSON'
