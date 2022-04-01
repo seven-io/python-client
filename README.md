@@ -1,4 +1,4 @@
-![Sms77 Logo](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "sms77")
+![](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "sms77 Logo")
 
 # Python API Client
 
@@ -61,8 +61,8 @@ def voice(self, to: str, text: str, params: dict = {}):
     pass
 ```
 
-#### Example
-
+### Examples
+#### Retrieve balance associated with given API key
 ```python
 from sms77api.Sms77api import Sms77api
 
@@ -70,7 +70,16 @@ client = Sms77api("InsertYourSuperSecretApiKeyFromSms77")
 print(client.balance())
 ```
 
-##### Support
+#### Send an SMS and return a detailed JSON response
+```python
+from sms77api.Sms77api import Sms77api
+import os
+
+client = Sms77api(os.environ.get('SMS77_API_KEY', 'FallbackValueIfMissing'))
+print(client.sms('+491771783130', 'Hi friend!', {'json': True}))
+```
+
+#### Support
 
 Need help? Feel free to [contact us](https://www.sms77.io/en/company/contact/).
 

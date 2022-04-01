@@ -11,5 +11,6 @@ class Endpoint(ExtendedEnum):
     PRICING = 'pricing'
     SMS = 'sms'
     STATUS = 'status'
+    SUBACCOUNTS = 'subaccounts'
     VALIDATE_FOR_VOICE = 'validate_for_voice'
     VOICE = 'voice'

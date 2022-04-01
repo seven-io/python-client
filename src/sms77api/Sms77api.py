@@ -7,6 +7,7 @@ from sms77api.classes.Method import Method
 from sms77api.classes.Contacts import ContactsAction, ContactsResponse
 from sms77api.classes.Lookup import LookupType, LookupJsonTypes
 from sms77api.classes.Pricing import PricingFormat
+from sms77api.classes.Subaccounts import SubaccountsAction
 
 
 def expect_json(endpoint: str, params: dict) -> bool:
@@ -110,6 +111,11 @@ class Sms77api:
 
     def status(self, msg_id: int):
         return self.__request(Method.GET, Endpoint.STATUS, local_params(locals())).text
+
+    def subaccounts(self, action: SubaccountsAction, params: dict = {}):
+        params['action'] = action.value
+        method = Method.GET if 'read' == action else Method.POST
+        return self.__request(method, Endpoint.SUBACCOUNTS, params).json()
 
     def validate_for_voice(self, number: str, callback: str = None):
         return self.__request(Method.POST, Endpoint.VALIDATE_FOR_VOICE,
