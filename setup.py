@@ -29,6 +29,6 @@ setuptools.setup(
     package_dir={'': 'src'},
     packages=setuptools.find_packages(where='src'),
     python_requires='>=3.4, <4',
-    url='https://github.com/sms77io/python-client',
+    url='https://github.com/seven-io/python-client',
     version='2.0.0',
 )

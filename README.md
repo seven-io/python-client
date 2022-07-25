@@ -53,6 +53,10 @@ def status(self, msg_id: int):
     pass
 
 
+def subaccounts(self, action: SubaccountsAction, params: dict = {}):
+    pass
+
+
 def validate_for_voice(self, number: str, callback: str = None):
     pass
 
@@ -62,7 +66,9 @@ def voice(self, to: str, text: str, params: dict = {}):
 ```
 
 ### Examples
+
 #### Retrieve balance associated with given API key
+
 ```python
 from sms77api.Sms77api import Sms77api
 
@@ -71,6 +77,7 @@ print(client.balance())
 ```
 
 #### Send an SMS and return a detailed JSON response
+
 ```python
 from sms77api.Sms77api import Sms77api
 import os
