@@ -1,7 +1,7 @@
 from sms77api.classes.ExtendedEnum import ExtendedEnum
 
 
-class HooksAction(ExtendedEnum):
+class AnalyticsAtion(ExtendedEnum):
     READ = 'read'
     SUBSCRIBE = 'subscribe'
     UNSUBSCRIBE = 'unsubscribe'

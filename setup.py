@@ -6,8 +6,8 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setuptools.setup(
-    author='sms77 e.K.',
-    author_email='support@sms77.io',
+    author='seven communications GmbH & Co. KG',
+    author_email='support@seven.io',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -20,8 +20,8 @@ setuptools.setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3 :: Only',
     ],
-    description='A Python wrapper for the Sms77.io SMS gateway.',
-    name='sms77api',
+    description='A Python wrapper for the seven.io SMS gateway.',
+    name='seven_api',
     install_requires=['requests'],
     keywords='sms, text2voice, hlr, cnam, mnp',
     long_description=long_description,
