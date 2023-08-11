@@ -16,6 +16,6 @@ fi
 
 python3.8 -m twine upload \
   --repository "$PYPI_REPOSITORY" \
-  --username "$SMS77IO_PYPI_USERNAME" \
-  --password "$SMS77IO_PYPI_PASSWORD" \
+  --username "$SEVEN_PYPI_USERNAME" \
+  --password "$SEVEN_PYPI_PASSWORD" \
   "dist/$DIST_NAME.*"

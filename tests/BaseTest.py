@@ -3,7 +3,7 @@ import os
 import csv
 import uuid
 from datetime import datetime
-from src.sms77api.Sms77api import Sms77api
+from src.seven_api.SevenApi import SevenApi
 
 
 class BaseTest(unittest.TestCase):
@@ -30,7 +30,7 @@ class BaseTest(unittest.TestCase):
     def __init__(self, *args, **kwargs) -> None:
         super(BaseTest, self).__init__(*args, **kwargs)
 
-        self.client = Sms77api(os.environ.get('SMS77_DUMMY_API_KEY'))
+        self.client = SevenApi(os.environ.get('SEVEN_API_KEY_SANDBOX'))
 
 
 if __name__ == '__main__':

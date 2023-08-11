@@ -3,8 +3,7 @@ from tests.BaseTest import BaseTest
 
 class TestVoice(BaseTest):
     def test_voice(self) -> None:
-        res = self.client.voice('+491771783130', 'HI2U!',
-                                {'xml': False, 'from': '+13134378004'})
+        res = self.client.voice('+491716992343', 'HI2U!', {'xml': False, 'from': '+13134378004'})
         lines = res.splitlines()
         code = int(lines[0])
         vid = int(lines[1])

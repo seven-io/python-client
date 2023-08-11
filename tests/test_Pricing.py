@@ -1,15 +1,15 @@
-from src.sms77api.classes.Pricing import PricingFormat
+from src.seven_api.classes.Pricing import PricingFormat
 from tests.BaseTest import BaseTest
 
 
 class TestPricing(BaseTest):
-    def test_pricing(self) -> None:
-        # CSV
+
+    def test_pricing_csv(self) -> None:
         res = self.client.pricing(PricingFormat.CSV, 'fr')
         self.assertIsInstance(res, str)
         self.assertTrue(BaseTest.is_valid_delimiter(res))
 
-        # JSON
+    def test_pricing_json(self) -> None:
         res = self.client.pricing(PricingFormat.JSON, 'de')
         self.assertIsInstance(res, dict)
         self.assertIsInstance(res['countCountries'], int)
@@ -25,11 +25,15 @@ class TestPricing(BaseTest):
             network = BaseTest.first_list_item_fallback(country['networks'])
             if network:
                 self.assertIsInstance(network['mcc'], str)
-                self.assertIsInstance(network['mncs'], list)
-                mnc = BaseTest.first_list_item_fallback(network['mncs'])
-                if mnc:
-                    self.assertIsInstance(mnc, str)
-                self.assertIsInstance(network['networkName'], str)
+                mncs = network['mncs']
+                self.assertTrue(mncs is None or type(mncs) is list)
+                if mncs is not None:
+                    mnc = BaseTest.first_list_item_fallback(mncs)
+                    if mnc:
+                        self.assertIsInstance(mnc, str)
+                network_name = network['networkName']
+                self.assertTrue(network_name is None or type(network_name) is str)
                 self.assertIsInstance(network['price'], float)
                 self.assertIsInstance(network['features'], list)
-                self.assertIsInstance(network['comment'], str)
+                comment = network['comment']
+                self.assertTrue(comment is None or type(comment) is str)

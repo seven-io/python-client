@@ -1,4 +1,4 @@
-from src.sms77api.classes.Contacts import ContactsAction, ContactsResponse
+from src.seven_api.classes.Contacts import ContactsAction, ContactsResponse
 from tests.BaseTest import BaseTest
 
 
@@ -33,7 +33,7 @@ class TestContacts(BaseTest):
         action = ContactsAction.WRITE
         params = {
             'email': 'wh@tev.er',
-            'empfaenger': '+491771783130',
+            'empfaenger': '+491716992343',
             'nick': 'Tom Tester',
         }
 

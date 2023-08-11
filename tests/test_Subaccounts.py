@@ -1,6 +1,6 @@
 import time
 
-from src.sms77api.classes.Subaccounts import SubaccountsAction
+from src.seven_api.classes.Subaccounts import SubaccountsAction
 from tests.BaseTest import BaseTest
 
 

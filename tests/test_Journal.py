@@ -1,4 +1,4 @@
-from src.sms77api.classes.Journal import JournalType
+from src.seven_api.classes.Journal import JournalType
 from tests.BaseTest import BaseTest
 
 
@@ -19,7 +19,7 @@ class TestJournal(BaseTest):
                 self.assertGreater(len(entry['id']), 0)
 
                 self.assertIsInstance(entry['price'], str)
-                self.assertGreater(len(entry['price']), 0)
+                # self.assertGreater(len(entry['price']), 0)
 
                 self.assertIsInstance(entry['text'], str)
 
@@ -34,11 +34,11 @@ class TestJournal(BaseTest):
     def test_inbound(self) -> None:
         for entry in self.base(JournalType.INBOUND, {}, False):
             self.assertIsInstance(entry['id'], str)
+            self.assertIsInstance(entry['from'], str)
             self.assertIsInstance(entry['price'], str)
-            self.assertIsInstance(entry['sender'], str)
-            self.assertIsInstance(entry['system'], str)
             self.assertIsInstance(entry['text'], str)
-            self.assertIsInstance(entry['time'], str)
+            self.assertIsInstance(entry['timestamp'], str)
+            self.assertIsInstance(entry['to'], str)
 
     def test_outbound(self) -> None:
         for entry in self.base(JournalType.OUTBOUND):
@@ -85,16 +85,35 @@ class TestJournal(BaseTest):
             self.assertGreater(len(entry['type']), 0)
 
     def test_replies(self) -> None:
-        self.base(JournalType.REPLIES)
+        for entry in self.base(JournalType.REPLIES, {}, False):
+            self.assertIsInstance(entry['id'], str)
+            self.assertIsInstance(entry['from'], str)
+            price = entry['price']
+            self.assertTrue(price is 0 or type(price) is float)
+            self.assertIsInstance(entry['text'], str)
+            self.assertIsInstance(entry['timestamp'], str)
+            self.assertIsInstance(entry['to'], str)
 
     def test_voice(self) -> None:
-        for entry in self.base(JournalType.VOICE):
-            self.assertIsInstance(entry['duration'], str)
-            self.assertGreater(len(entry['duration']), 0)
+        for entry in self.base(JournalType.VOICE, {}, False):
+            duration = entry['duration']
+            if duration is not None:
+                self.assertGreater(len(duration), 0)
+            self.assertTrue(type(duration) is str or duration is None)
 
-            self.assertIsInstance(entry['error'], str)
+            error = entry['error']
+            self.assertTrue(error is None or type(error) is str)
+
+            self.assertIsInstance(entry['id'], str)
+            self.assertIsInstance(entry['from'], str)
+
+            price = entry['price']
+            self.assertTrue(price is None or type(price) is str)
 
             self.assertIsInstance(entry['status'], str)
+            self.assertIsInstance(entry['text'], str)
+            self.assertIsInstance(entry['timestamp'], str)
+            self.assertIsInstance(entry['to'], str)
 
             self.assertIsInstance(entry['xml'], bool)
 

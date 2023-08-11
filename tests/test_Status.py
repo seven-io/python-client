@@ -1,5 +1,5 @@
-from src.sms77api.classes.Journal import JournalType
-from src.sms77api.classes.Status import StatusMessage
+from src.seven_api.classes.Journal import JournalType
+from src.seven_api.classes.Status import StatusMessage
 from tests.BaseTest import BaseTest
 
 

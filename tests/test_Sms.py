@@ -3,15 +3,15 @@ from tests.BaseTest import BaseTest
 
 class TestSms(BaseTest):
     def test_sms(self) -> None:
-        res = self.client.sms('+491771783130', 'HEY!!')
+        res = self.client.sms('+491716992343', 'HEY!!')
         self.assertEqual(res, '100')
 
-        res = self.client.sms('+491771783130', 'HEY!!', {'return_msg_id': True})
+        res = self.client.sms('+491716992343', 'HEY!!', {'return_msg_id': True})
         code, sid = res.splitlines()
         self.assertEqual(code, '100')
         self.assertIsInstance(sid, str)
 
-        res = self.client.sms('+491771783130', 'HEY!!',
+        res = self.client.sms('+491716992343', 'HEY!!',
                               {'return_msg_id': True, 'details': True})
         lines = res.splitlines()
         self.assertEqual(lines[0], '100')
@@ -27,7 +27,7 @@ class TestSms(BaseTest):
         self.assertIsInstance(lines[10], str)
 
         # JSON
-        res = self.client.sms('+491771783130', 'HEY!!', {'json': True, })
+        res = self.client.sms('+491716992343', 'HEY!!', {'json': True, })
         self.assertEqual(res['success'], '100')
         self.assertIsInstance(res['total_price'], (float, int))
         self.assertIsInstance(res['balance'], float)

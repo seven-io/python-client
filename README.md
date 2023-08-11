@@ -1,4 +1,4 @@
-![](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "sms77 Logo")
+![](https://www.seven.io/wp-content/uploads/Logo.svg "seven Logo")
 
 # Python API Client
 
@@ -7,7 +7,7 @@
 Make sure you have [Python 3](https://www.python.org/downloads/) installed.
 
 ```shell script
-pip3 install sms77api
+pip3 install seven_api
 ```
 
 ### Methods
@@ -70,25 +70,25 @@ def voice(self, to: str, text: str, params: dict = {}):
 #### Retrieve balance associated with given API key
 
 ```python
-from sms77api.Sms77api import Sms77api
+from seven_api.SevenApi import SevenApi
 
-client = Sms77api("InsertYourSuperSecretApiKeyFromSms77")
+client = SevenApi("InsertYourSuperSecretApiKeyFromSeven")
 print(client.balance())
 ```
 
 #### Send an SMS and return a detailed JSON response
 
 ```python
-from sms77api.Sms77api import Sms77api
+from seven_api.SevenApi import SevenApi
 import os
 
-client = Sms77api(os.environ.get('SMS77_API_KEY', 'FallbackValueIfMissing'))
-print(client.sms('+491771783130', 'Hi friend!', {'json': True}))
+client = SevenApi(os.environ.get('SEVEN_API_KEY', 'FallbackValueIfMissing'))
+print(client.sms('+49179999999999', 'Hi friend!', {'json': True}))
 ```
 
 #### Support
 
-Need help? Feel free to [contact us](https://www.sms77.io/en/company/contact/).
+Need help? Feel free to [contact us](https://www.seven.io/en/company/contact/).
 
 ###### License
 

@@ -1,10 +1,10 @@
-from src.sms77api.classes.Lookup import LookupType, MnpResponse
+from src.seven_api.classes.Lookup import LookupType, MnpResponse
 from tests.BaseTest import BaseTest
 
 
 class TestLookup(BaseTest):
     def test_lookup_cnam(self) -> None:
-        res = self.client.lookup(LookupType.CNAM, '+491771783130')
+        res = self.client.lookup(LookupType.CNAM, '+491716992343')
 
         self.assertIsInstance(res, dict)
         self.assertIsInstance(res['success'], str)
@@ -13,7 +13,7 @@ class TestLookup(BaseTest):
         self.assertIsInstance(res['name'], str)
 
     def test_lookup_format(self) -> None:
-        res = self.client.lookup(LookupType.FORMAT, '+491771783130')
+        res = self.client.lookup(LookupType.FORMAT, '+491716992343')
 
         self.assertIsInstance(res, dict)
         self.assertTrue(res['success'])
@@ -35,7 +35,7 @@ class TestLookup(BaseTest):
 
             return valid
 
-        res = self.client.lookup(LookupType.HLR, '+491771783130')
+        res = self.client.lookup(LookupType.HLR, '+491716992343')
 
         self.assertIsInstance(res, dict)
         self.assertIsInstance(res['status'], bool)
@@ -60,12 +60,12 @@ class TestLookup(BaseTest):
         self.assertTrue(is_valid_carrier(res['original_carrier']))
 
     def test_lookup_mnp(self) -> None:
-        res = self.client.lookup(LookupType.MNP, '+491771783130')
+        res = self.client.lookup(LookupType.MNP, '+491716992343')
         self.assertIsInstance(res, str)
         self.assertIn(res, MnpResponse.values())
 
         # JSON
-        res = self.client.lookup(LookupType.MNP, '+491771783130', True)
+        res = self.client.lookup(LookupType.MNP, '+491716992343', True)
         self.assertIsInstance(res, dict)
 
         self.assertTrue(res['success'])
