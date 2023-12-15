@@ -1,4 +1,5 @@
-![](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "sms77 Logo")
+<img src="https://www.seven.io/wp-content/uploads/Logo.svg" width="250" />
+
 
 # Python API Client
 
