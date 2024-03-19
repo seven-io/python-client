@@ -9,6 +9,7 @@ class Endpoint(ExtendedEnum):
     JOURNAL = 'journal'
     LOOKUP = 'lookup'
     PRICING = 'pricing'
+    RCS = 'rcs'
     SMS = 'sms'
     STATUS = 'status'
     SUBACCOUNTS = 'subaccounts'

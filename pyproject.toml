@@ -1,16 +1,13 @@
-[build-system]
-requires = ['setuptools', 'setuptools-scm']
-build-backend = 'setuptools.build_meta'
-
-[project]
+[tool.poetry]
 name = 'seven_api'
 authors = [
     { name = 'seven communications GmbH & Co. KG', email = 'support@seven.io' },
 ]
 description = 'A Python wrapper for seven.io.'
+homepage = 'https://www.seven.io'
 readme = 'README.md'
-requires-python = '>=3.4, <4'
-keywords = ['cnam', 'hlr', 'mnp', 'sms', 'text2voice', 'tts']
+requires-python = '>=3.7, <4'
+keywords = ['cnam', 'hlr', 'mnp', 'rcs', 'sms', 'text2voice', 'tts']
 license = { text = 'MIT' }
 classifiers = [
     'Development Status :: 3 - Alpha',
@@ -18,8 +15,6 @@ classifiers = [
     'Topic :: Software Development :: Build Tools',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.5',
-    'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3 :: Only',
@@ -29,7 +24,12 @@ dependencies = [
     'importlib-metadata; python_version<"3.8"',
 ]
 dynamic = ['version']
+packages = [{ include = "seven_api" }]
+repository = 'https://github.com/seven-io/python-client.git'
 
-[project.urls]
-Homepage = 'https://www.seven.io'
-Repository = 'https://github.com/seven-io/python-client.git'
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

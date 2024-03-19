@@ -1,4 +1,4 @@
-from src.seven_api.classes.Journal import JournalType
+from seven_api.classes.Journal import JournalType
 from tests.BaseTest import BaseTest
 
 
@@ -116,10 +116,3 @@ class TestJournal(BaseTest):
             self.assertIsInstance(entry['to'], str)
 
             self.assertIsInstance(entry['xml'], bool)
-
-    def test_voice_call(self) -> None:
-        for entry in self.base(JournalType.VOICE_CALL, {}, False):
-            self.assertIsInstance(entry['caller'], str)
-            self.assertIsInstance(entry['id'], str)
-            self.assertIsInstance(entry['system'], str)
-            self.assertIsInstance(entry['time'], str)

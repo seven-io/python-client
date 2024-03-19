@@ -1,10 +1,10 @@
-from src.seven_api.classes.Contacts import ContactsAction, ContactsResponse
+from seven_api.classes.Contacts import ContactsAction, ContactsResponse
 from tests.BaseTest import BaseTest
 
 
 class TestContacts(BaseTest):
     def test_contacts_del(self) -> None:
-        action = ContactsAction.DEL
+        action = ContactsAction.DELETE
         params = {'id': 123456}
 
         # CSV

@@ -3,7 +3,7 @@ import os
 import csv
 import uuid
 from datetime import datetime
-from src.seven_api.SevenApi import SevenApi
+from seven_api.SevenApi import SevenApi
 
 
 class BaseTest(unittest.TestCase):

@@ -1,7 +1,7 @@
 .. seven-client documentation master file, created by
-   sphinx-quickstart on Fri Aug 11 12:26:03 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+sphinx-quickstart on Fri Aug 11 12:26:03 2023.
+You can adapt this file completely to your liking, but it should at least
+contain the root `toctree` directive.
 
 Welcome to seven-client's documentation!
 ========================================

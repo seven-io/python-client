@@ -1,4 +1,4 @@
-from src.seven_api.classes.Hooks import HooksAction, HookEventType, HookRequestMethod
+from seven_api.classes import HooksAction, HookEventType, HookRequestMethod
 from tests.BaseTest import BaseTest
 
 

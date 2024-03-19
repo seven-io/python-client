@@ -1,4 +1,4 @@
-from src.seven_api.classes.Pricing import PricingFormat
+from seven_api.classes import PricingFormat
 from tests.BaseTest import BaseTest
 
 

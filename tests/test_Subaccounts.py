@@ -1,6 +1,6 @@
 import time
 
-from src.seven_api.classes.Subaccounts import SubaccountsAction
+from seven_api.classes.Subaccounts import SubaccountsAction
 from tests.BaseTest import BaseTest
 
 

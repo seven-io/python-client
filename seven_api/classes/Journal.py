@@ -6,4 +6,3 @@ class JournalType(ExtendedEnum):
     OUTBOUND = 'outbound'
     REPLIES = 'replies'
     VOICE = 'voice'
-    VOICE_CALL = 'voice_call'

@@ -4,7 +4,7 @@ from seven_api.classes.ExtendedEnum import ExtendedEnum
 class ContactsAction(ExtendedEnum):
     READ = 'read'
     WRITE = 'write'
-    DEL = 'del'
+    DELETE = 'del'
 
 
 class ContactsResponse(ExtendedEnum):

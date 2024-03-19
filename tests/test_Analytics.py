@@ -8,8 +8,7 @@ class TestAnalytics(BaseTest):
         start = (today - timedelta(days=90)).strftime('%Y-%m-%d')
         end = today.strftime('%Y-%m-%d')
 
-        res = self.client.analytics(
-            {'start': start, 'end': end, 'label': 'all', 'group_by': 'country'})
+        res = self.client.analytics.by_country({'start': start, 'end': end, 'label': 'all'})
 
         self.assertIsInstance(res, list)
 

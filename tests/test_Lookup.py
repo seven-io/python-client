@@ -1,4 +1,4 @@
-from src.seven_api.classes.Lookup import LookupType, MnpResponse
+from seven_api.classes import LookupType, MnpResponse
 from tests.BaseTest import BaseTest
 
 
